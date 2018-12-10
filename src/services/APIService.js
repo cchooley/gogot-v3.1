@@ -1,5 +1,5 @@
 import axios from "axios";
-import nprogress from "nprogress";
+import jwtDecode from "jwt-decode";
 
 const apiClient = axios.create({
   baseURL: "https://gogot-server.herokuapp.com/",
@@ -10,26 +10,20 @@ const apiClient = axios.create({
   }
 });
 
-const instance = axios.create({
-  baseURL: "https://gogot-server.herokuapp.com/"
-});
-
-instance.interceptors.request.use(config => {
-  nprogress.start();
-  return config;
-});
-
-instance.interceptors.response.use(response => {
-  nprogress.done();
-  return response;
-});
-
 export default {
-  instance,
   getCharacters() {
     return apiClient.get("/characters");
   },
   getCharacter(id) {
     return apiClient.get("/characters/" + id);
+  },
+  login(player) {
+    return apiClient.post("/auth/login", player).then(response => {
+      window.localStorage.token = response.data.token;
+    });
+  },
+  getPlayer() {
+    let decoded = jwtDecode(window.localStorage.token);
+    return apiClient.get("/players/" + decoded.userId);
   }
 };
