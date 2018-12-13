@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    <h2>Welcome, {{ player.name }}!</h2>
     <h2>Available Characters:</h2>
     <v-layout row wrap>
       <v-flex
@@ -27,27 +26,8 @@
 </template>
 
 <script>
-import APIService from "../services/APIService.js";
-
 export default {
-  data() {
-    return {
-      characters: [],
-      player: {}
-    };
-  },
-  created() {
-    APIService.getCharacters()
-      .then(response => {
-        this.characters = response.data.character;
-      })
-      .catch(error => {
-        console.log("There was an error: " + error.response);
-      });
-    APIService.getPlayer().then(response => {
-      this.player = response.data.player;
-    });
-  }
+  props: ["characters"]
 };
 </script>
 

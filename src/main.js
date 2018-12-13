@@ -7,7 +7,7 @@ import store from "./store";
 Vue.config.productionTip = false;
 
 new Vue({
+  ...App,
   router,
-  store,
-  render: h => h(App)
+  store
 }).$mount("#app");
